@@ -1,8 +1,0 @@
-Feature,Coefficient
-Department,-0.012057877479381305
-Procedure_Code,-0.0022268803059376004
-Insurance_Type,-0.28430851177642047
-Claim_Amount,0.0028582452872094677
-Documentation_Delay_Days,0.07880584317168425
-Length_of_Stay,0.01812905816842767
-Previous_Denial_Count,0.18113638320512834
