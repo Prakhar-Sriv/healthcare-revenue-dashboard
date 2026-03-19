@@ -157,6 +157,11 @@ st.markdown("""
         letter-spacing: -1px;
     }
 
+    .st-emotion-cache-1ne20ew{
+            
+    border: 1.5px solid rgba(255, 255, 255, 0.2) !important;
+    }
+
     /* Glassmorphism Colored KPI Accents */
     .bg-blue { border-left: 4px solid #0ea5e9; background: linear-gradient(135deg, rgba(14,165,233,0.1) 0%, rgba(255,255,255,0.02) 100%); }
     .bg-green { border-left: 4px solid #10b981; background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(255,255,255,0.02) 100%); }
