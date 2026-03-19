@@ -6,12 +6,11 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import os
 
-
-# 1. PAGE CONFIGURATION & STANDALONE CSS
-
+# ==========================================
+# 1. PAGE CONFIGURATION & PURE GLASSMORPHISM CSS
+# ==========================================
 st.set_page_config(page_title="Department Dashboard", layout="wide", initial_sidebar_state="expanded")
 
-# High-Contrast Premium SaaS CSS (EXACTLY AS REQUESTED)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
@@ -21,91 +20,80 @@ st.markdown("""
         color: #ffffff !important;
     }
     
+    /* Vibrant deep background to make the glass blur visible */
     .stApp { 
-        background-color: #0f172a; 
+        background-color: #020617; 
         background-image: 
-            radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%), 
-            radial-gradient(at 100% 0%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+            radial-gradient(circle at 15% 50%, rgba(14, 165, 233, 0.25), transparent 25%),
+            radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.25), transparent 25%),
+            radial-gradient(circle at 50% 90%, rgba(244, 63, 94, 0.2), transparent 30%);
         background-attachment: fixed; 
     }
 
+    /* Glassmorphism Sidebar */
     [data-testid="stSidebar"] { 
-        background: linear-gradient(180deg, #1e1b4b 0%, #312e81 100%) !important; 
+        background: rgba(15, 23, 42, 0.4) !important; 
+        backdrop-filter: blur(20px) !important;
+        -webkit-backdrop-filter: blur(20px) !important;
         border-right: 1px solid rgba(255, 255, 255, 0.1); 
     }
     [data-testid="stSidebar"] * { color: #ffffff !important; }
 
-    /* Keep sidebar selectbox readable (fix white text on light select background) */
+    /* Sidebar Selectbox Glassification */
     [data-testid="stSidebar"] .stSelectbox label,
-    [data-testid="stSidebar"] .stSelectbox p {
-        color: #e2e8f0 !important;
-    }
+    [data-testid="stSidebar"] .stSelectbox p { color: #e2e8f0 !important; }
     [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div {
-        background-color: #f8fafc !important;
-        border: 1px solid #cbd5e1 !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.3) !important;
     }
     [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div > div,
-    [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div > div > div {
-        color: #0f172a !important;
-    }
+    [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] > div > div > div { color: #ffffff !important; }
     [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] span,
     [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] input,
     [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] svg {
-        color: #0f172a !important;
-        fill: #0f172a !important;
-    }
-    [data-testid="stSidebar"] .stSelectbox [data-baseweb="select"] * {
-        color: #0f172a !important;
-        fill: #0f172a !important;
-        opacity: 1 !important;
-    }
-
-    /* Expander label + content text visibility */
-    [data-testid="stExpander"] summary,
-    [data-testid="stExpander"] summary p,
-    [data-testid="stExpander"] summary span,
-    [data-testid="stExpander"] summary div {
-        color: #ffffff !important;
-        background: #1e293b !important;
-    }
-    [data-testid="stExpander"] summary svg,
-    [data-testid="stExpanderToggleIcon"] {
         color: #ffffff !important;
         fill: #ffffff !important;
     }
+
+    /* Expander Glassmorphism */
+    [data-testid="stExpander"] {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        border-top: 1px solid rgba(255,255,255,0.2) !important;
+        border-radius: 16px !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+    }
+    [data-testid="stExpander"] summary,
+    [data-testid="stExpander"] summary p,
     [data-testid="stExpanderDetails"],
     [data-testid="stExpanderDetails"] * {
+        background: transparent !important;
         color: #ffffff !important;
     }
-    [data-testid="stExpander"] {
-        background: #1e293b !important;
-        border: 1px solid rgba(255,255,255,0.2) !important;
-        border-radius: 12px !important;
-    }
-    [data-testid="stExpanderDetails"] {
-        background: #1e293b !important;
-    }
 
-    /* Dataframe theme alignment */
-    [data-testid="stDataFrame"],
-    [data-testid="stDataFrame"] > div,
-    [data-testid="stDataFrame"] [role="grid"],
-    [data-testid="stDataFrame"] [role="row"],
+    /* Dataframe Glassmorphism Fix */
+    [data-testid="stDataFrame"], [data-testid="stDataFrame"] > div,
+    [data-testid="stDataFrame"] [role="grid"], [data-testid="stDataFrame"] [role="row"],
     [data-testid="stDataFrame"] [role="gridcell"] {
-        background: #1e293b !important;
+        background: transparent !important;
         color: #ffffff !important;
     }
     [data-testid="stDataFrame"] [role="columnheader"] {
-        background: #0f172a !important;
+        background: rgba(255, 255, 255, 0.05) !important;
         color: #e2e8f0 !important;
-        border-bottom: 1px solid rgba(255,255,255,0.25) !important;
+        border-bottom: 1px solid rgba(255,255,255,0.2) !important;
+        backdrop-filter: blur(10px);
     }
 
-    /* Dataframe action controls (search/download/menu) visibility */
+    /* Dataframe action controls */
     [data-testid="stDataFrame"] button,
     [data-testid="stDataFrame"] [role="button"] {
         color: #ffffff !important;
-        background: #1e293b !important;
+        background: rgba(30, 41, 59, 0.8) !important;
         border: 1px solid rgba(255,255,255,0.25) !important;
     }
     [data-testid="stDataFrame"] svg {
@@ -118,69 +106,70 @@ st.markdown("""
         border: 1px solid rgba(255,255,255,0.25) !important;
     }
 
-    .chart-container { 
-        background: rgba(30, 41, 59, 0.8); 
-        border-radius: 16px; 
-        padding: 1.5rem; 
-        border: 1px solid rgba(255, 255, 255, 0.15); 
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4); 
-        margin-bottom: 0.5rem; 
-        backdrop-filter: blur(10px);
-        color: #ffffff;
-    }
-
-    /* Apply same visual treatment to st.container(border=True) blocks */
+    /* Glassmorphism Containers for Charts */
     div[data-testid="stVerticalBlockBorderWrapper"],
     div[data-testid="stVerticalBlockBorderWrapper"] > div {
-        background: rgba(30, 41, 59, 0.8) !important;
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
         border-radius: 16px !important;
         padding: 1.5rem !important;
-        border: 4px solid rgba(255, 255, 255, 1) !important;
-        outline: 4px solid rgba(255, 255, 255, 1) !important;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(255,255,255,0.12) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.25) !important; 
+        border-left: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
         margin-bottom: 0.5rem !important;
-        backdrop-filter: blur(10px) !important;
+        outline: none !important;
     }
 
+    /* Glassmorphism Custom KPI Cards */
     .custom-kpi {
         padding: 24px 20px;
-        border-radius: 12px;
+        border-radius: 16px;
         color: #ffffff;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         margin-bottom: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-top: 1px solid rgba(255, 255, 255, 0.25);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
     }
     .custom-kpi:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.5);
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 15px 35px 0 rgba(0, 0, 0, 0.4);
+        background: rgba(255, 255, 255, 0.06);
     }
     .custom-kpi .kpi-title {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.95;
-        margin-bottom: 8px;
+        letter-spacing: 1.5px;
+        opacity: 0.8;
+        margin-bottom: 10px;
     }
     .custom-kpi .kpi-value {
-        font-size: 32px;
+        font-size: 34px;
         font-weight: 800;
         margin: 0;
         line-height: 1.1;
-        letter-spacing: -0.5px;
+        letter-spacing: -1px;
     }
-    
-    .bg-blue { background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%); }
-    .bg-red { background: linear-gradient(135deg, #f43f5e 0%, #be123c 100%); }
-    .bg-purple { background: linear-gradient(135deg, #a855f7 0%, #6d28d9 100%); }
-    .bg-green { background: linear-gradient(135deg, #10b981 0%, #047857 100%); }
+
+    /* Glassmorphism Colored KPI Accents */
+    .bg-blue { border-left: 4px solid #0ea5e9; background: linear-gradient(135deg, rgba(14,165,233,0.1) 0%, rgba(255,255,255,0.02) 100%); }
+    .bg-green { border-left: 4px solid #10b981; background: linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(255,255,255,0.02) 100%); }
+    .bg-purple { border-left: 4px solid #a855f7; background: linear-gradient(135deg, rgba(168,85,247,0.1) 0%, rgba(255,255,255,0.02) 100%); }
+    .bg-red { border-left: 4px solid #f43f5e; background: linear-gradient(135deg, rgba(244,63,94,0.1) 0%, rgba(255,255,255,0.02) 100%); }
+
 </style>
 """, unsafe_allow_html=True)
 
 
+# ==========================================
 # 2. REAL DATA LOADER
-
+# ==========================================
 @st.cache_data
 def load_data():
     """Dynamically locates the 'data' folder and loads feature_store.csv"""
@@ -211,7 +200,7 @@ def load_data():
     elif "Claim_Date" not in df.columns:
         df["Claim_Date"] = pd.to_datetime("today") 
         
-    # Safe mapping for the Donut chart (Fixed integer concatenation error)
+    # Safe mapping for the Donut chart
     if "Denial_Reason" not in df.columns:
         if "Insurance_Type" in df.columns:
             df["Denial_Reason"] = "Type " + df["Insurance_Type"].astype(str) + " Error"
@@ -222,8 +211,9 @@ def load_data():
     return df
 
 
+# ==========================================
 # 3. HELPER FUNCTIONS
-
+# ==========================================
 def format_inr(num):
     if num >= 10000000:
         return f"INR {num/10000000:.2f} Cr"
@@ -232,25 +222,25 @@ def format_inr(num):
     return f"INR {num:,.0f}"
 
 def get_chart_layout(title=""):
-    """Standardized Plotly theme with pure white text."""
+    """Standardized Plotly theme with transparent backgrounds for glass effect."""
     return dict(
         template="plotly_dark",
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="Plus Jakarta Sans, sans-serif", color="#e2e8f0"),
         margin=dict(l=10, r=10, t=4, b=20),
-        hoverlabel=dict(bgcolor="#0f172a", font_size=14, font_family="Plus Jakarta Sans", font_color="#ffffff"),
+        hoverlabel=dict(bgcolor="rgba(15, 23, 42, 0.9)", font_size=14, font_family="Plus Jakarta Sans", font_color="#ffffff", bordercolor="rgba(255,255,255,0.2)"),
         legend=dict(
             font=dict(color="#ffffff", size=12),
-            bgcolor="rgba(15, 23, 42, 0.85)",
+            bgcolor="rgba(255, 255, 255, 0.05)",
             bordercolor="rgba(255,255,255,0.2)",
             borderwidth=1,
         )
     )
 
-
+# ==========================================
 # 4. MAIN DASHBOARD FUNCTION
-
+# ==========================================
 def show_department_dashboard():
     df = load_data()
 
@@ -258,7 +248,7 @@ def show_department_dashboard():
     st.markdown(
         """
         <div style="padding-bottom: 25px;">
-            <h1 style='font-size:36px; font-weight:800; color: #ffffff; margin-bottom: 5px; letter-spacing: -1px;'>
+            <h1 style='font-size:38px; font-weight:800; color: #ffffff; margin-bottom: 5px; letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);'>
                 Department Performance Dashboard
             </h1>
             <p style='color: #cbd5e1; font-size: 16px; font-weight: 500;'>Unit-level financial efficiency, revenue trends, and leakage tracking.</p>
@@ -287,16 +277,16 @@ def show_department_dashboard():
     leakage_rate = (leakage / total_revenue) * 100 if total_revenue != 0 else 0
     denial_rate = (denied_claims / total_claims) * 100 if total_claims > 0 else 0
 
-    # Render Custom High-Contrast KPI Cards
+    # Render Custom Glassmorphism KPI Cards
     c1, c2, c3, c4 = st.columns(4)
     with c1: st.markdown(f'<div class="custom-kpi bg-blue"><div class="kpi-title">Total Billed Revenue</div><div class="kpi-value">{format_inr(total_revenue)}</div></div>', unsafe_allow_html=True)
     with c2: st.markdown(f'<div class="custom-kpi bg-red"><div class="kpi-title">Revenue Leakage</div><div class="kpi-value">{format_inr(leakage)}</div></div>', unsafe_allow_html=True)
     with c3: st.markdown(f'<div class="custom-kpi bg-purple"><div class="kpi-title">Leakage Rate</div><div class="kpi-value">{leakage_rate:.2f}%</div></div>', unsafe_allow_html=True)
     with c4: st.markdown(f'<div class="custom-kpi bg-green"><div class="kpi-title">Denial Rate</div><div class="kpi-value">{denial_rate:.2f}%</div></div>', unsafe_allow_html=True)
 
-
+    # ==========================================
     # 5. CHARTS: TRENDS & ROOT CAUSES
-  
+    # ==========================================
     col_t1, col_t2 = st.columns([5, 5], gap="large")
     
     with col_t1:
@@ -309,14 +299,9 @@ def show_department_dashboard():
             fig_trend.update_layout(**get_chart_layout(""))
             fig_trend.update_layout(
                 legend=dict(
-                    x=0.99,
-                    y=0.01,
-                    xanchor="right",
-                    yanchor="bottom",
+                    x=0.99, y=0.01, xanchor="right", yanchor="bottom",
                     font=dict(color="#ffffff", size=11),
-                    bgcolor="rgba(15, 23, 42, 0.85)",
-                    bordercolor="rgba(255,255,255,0.2)",
-                    borderwidth=1,
+                    bgcolor="rgba(255, 255, 255, 0.05)", bordercolor="rgba(255,255,255,0.2)", borderwidth=1,
                 )
             )
             fig_trend.update_xaxes(showgrid=False, title="")
@@ -335,14 +320,9 @@ def show_department_dashboard():
                 fig_donut.update_layout(
                     showlegend=True,
                     legend=dict(
-                        x=1.02,
-                        y=0.95,
-                        xanchor="left",
-                        yanchor="top",
+                        x=1.02, y=0.95, xanchor="left", yanchor="top",
                         font=dict(color="#ffffff", size=12),
-                        bgcolor="rgba(15, 23, 42, 0.85)",
-                        bordercolor="rgba(255,255,255,0.2)",
-                        borderwidth=1,
+                        bgcolor="rgba(255, 255, 255, 0.05)", bordercolor="rgba(255,255,255,0.2)", borderwidth=1,
                     ),
                     margin=dict(r=165),
                 )
@@ -351,9 +331,9 @@ def show_department_dashboard():
             else:
                 st.info("No denied claims found in this segment.")
 
-
+    # ==========================================
     # 6. DEPARTMENTAL BREAKDOWN
-
+    # ==========================================
     col1, col2 = st.columns([5, 5], gap="large")
 
     with col1:
@@ -388,20 +368,18 @@ def show_department_dashboard():
             fig_scatter.update_layout(
                 legend_title_text="",
                 legend=dict(
-                    x=0.01,
-                    y=0.99,
-                    xanchor="left",
-                    yanchor="top",
+                    x=0.01, y=0.99, xanchor="left", yanchor="top",
                     font=dict(color="#ffffff", size=11),
-                    bgcolor="rgba(15, 23, 42, 0.85)",
-                    borderwidth=0,
+                    bgcolor="rgba(255, 255, 255, 0.05)", borderwidth=0,
                 )
             )
             fig_scatter.update_xaxes(showgrid=True, gridcolor="rgba(255,255,255,0.15)", title="Billed Amount (INR)")
             fig_scatter.update_yaxes(showgrid=True, gridcolor="rgba(255,255,255,0.15)", title="Approved Amount (INR)")
             st.plotly_chart(fig_scatter, use_container_width=True)
 
-    # Raw Data Table
+    # ==========================================
+    # 7. DATA TABLE (Styled Expander with Dark Glass Theme)
+    # ==========================================
     with st.expander("View Raw Departmental Transactions (Last 50 Records)"):
         display_df = df.copy()
         if "Claim_Date" in display_df.columns:
@@ -412,37 +390,16 @@ def show_department_dashboard():
             .style
             .set_properties(**{
                 "color": "#ffffff",
-                "background-color": "#1e293b",
+                "background-color": "rgba(30, 41, 59, 0.6)",
                 "border-color": "rgba(255,255,255,0.15)",
             })
             .set_table_styles([
-                {
-                    "selector": "th",
-                    "props": [
-                        ("color", "#ffffff"),
-                        ("background-color", "#1e293b"),
-                        ("border", "1px solid rgba(255,255,255,0.2)"),
-                    ],
-                },
-                {
-                    "selector": "th.col_heading, th.row_heading, th.blank",
-                    "props": [
-                        ("color", "#ffffff"),
-                        ("background-color", "#1e293b"),
-                        ("border", "1px solid rgba(255,255,255,0.2)"),
-                    ],
-                },
-                {
-                    "selector": "td",
-                    "props": [
-                        ("color", "#ffffff"),
-                        ("background-color", "#1e293b"),
-                        ("border", "1px solid rgba(255,255,255,0.12)"),
-                    ],
-                },
+                {"selector": "th", "props": [("color", "#ffffff"), ("background-color", "rgba(15, 23, 42, 0.8)"), ("border", "1px solid rgba(255,255,255,0.2)")]},
+                {"selector": "th.col_heading, th.row_heading, th.blank", "props": [("color", "#ffffff"), ("background-color", "rgba(15, 23, 42, 0.8)"), ("border", "1px solid rgba(255,255,255,0.2)")]},
+                {"selector": "td", "props": [("color", "#ffffff"), ("background-color", "rgba(30, 41, 59, 0.6)"), ("border", "1px solid rgba(255,255,255,0.12)")]},
             ])
         )
         st.dataframe(styled_table, use_container_width=True, hide_index=True)
 
-# if __name__ == "__main__":
-#     show_department_dashboard()
+if __name__ == "__main__":
+    show_department_dashboard()
