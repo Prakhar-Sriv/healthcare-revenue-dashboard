@@ -6,9 +6,9 @@ import plotly.graph_objects as go
 from datetime import datetime, timedelta
 import os
 
-# ==========================================
+
 # 1. PAGE CONFIGURATION & STANDALONE CSS
-# ==========================================
+
 st.set_page_config(page_title="Department Dashboard", layout="wide", initial_sidebar_state="expanded")
 
 # High-Contrast Premium SaaS CSS (EXACTLY AS REQUESTED)
@@ -178,9 +178,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==========================================
+
 # 2. REAL DATA LOADER
-# ==========================================
+
 @st.cache_data
 def load_data():
     """Dynamically locates the 'data' folder and loads feature_store.csv"""
@@ -221,9 +221,9 @@ def load_data():
     df = df.dropna(subset=["Claim_Date"])
     return df
 
-# ==========================================
+
 # 3. HELPER FUNCTIONS
-# ==========================================
+
 def format_inr(num):
     if num >= 10000000:
         return f"INR {num/10000000:.2f} Cr"
@@ -248,9 +248,9 @@ def get_chart_layout(title=""):
         )
     )
 
-# ==========================================
+
 # 4. MAIN DASHBOARD FUNCTION
-# ==========================================
+
 def show_department_dashboard():
     df = load_data()
 
@@ -294,9 +294,9 @@ def show_department_dashboard():
     with c3: st.markdown(f'<div class="custom-kpi bg-purple"><div class="kpi-title">Leakage Rate</div><div class="kpi-value">{leakage_rate:.2f}%</div></div>', unsafe_allow_html=True)
     with c4: st.markdown(f'<div class="custom-kpi bg-green"><div class="kpi-title">Denial Rate</div><div class="kpi-value">{denial_rate:.2f}%</div></div>', unsafe_allow_html=True)
 
-    # ==========================================
+
     # 5. CHARTS: TRENDS & ROOT CAUSES
-    # ==========================================
+  
     col_t1, col_t2 = st.columns([5, 5], gap="large")
     
     with col_t1:
@@ -351,9 +351,9 @@ def show_department_dashboard():
             else:
                 st.info("No denied claims found in this segment.")
 
-    # ==========================================
+
     # 6. DEPARTMENTAL BREAKDOWN
-    # ==========================================
+
     col1, col2 = st.columns([5, 5], gap="large")
 
     with col1:
