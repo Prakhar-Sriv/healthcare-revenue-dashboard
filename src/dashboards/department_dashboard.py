@@ -444,5 +444,5 @@ def show_department_dashboard():
         )
         st.dataframe(styled_table, use_container_width=True, hide_index=True)
 
-if __name__ == "__main__":
-    show_department_dashboard()
+# if __name__ == "__main__":
+#     show_department_dashboard()
